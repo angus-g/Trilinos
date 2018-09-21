@@ -1,0 +1,16 @@
+recursive-include cmake *
+prune packages
+recursive-include packages/rol/src *
+recursive-include packages/rol/cmake *
+recursive-include packages/teuchos *
+recursive-include commonTools *
+recursive-include packages CMakeLists.txt
+recursive-include packages *.cmake
+recursive-include packages/new_package *
+include CMakeLists.txt
+include PackagesList.cmake
+include ProjectName.cmake
+include CTestConfig.cmake
+include TPLsList.cmake
+include Version.cmake
+include LICENSE
