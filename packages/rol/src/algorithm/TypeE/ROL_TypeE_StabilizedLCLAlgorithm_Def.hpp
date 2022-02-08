@@ -222,7 +222,7 @@ void StabilizedLCLAlgorithm<Real>::run( Vector<Real>          &x,
                                              makePtrFromRef(eres));
   std::vector<Ptr<Vector<Real>>> vecList = {s,u,v};
   Ptr<PartitionedVector<Real>> xp  = makePtr<PartitionedVector<Real>>(vecList);
-  Ptr<PartitionedVector<Real>> gxp = makePtr<PartitionedVector<Real>>({gs,gu,gv});
+  Ptr<PartitionedVector<Real>> gxp = makePtr<PartitionedVector<Real>>(std::vector<Ptr<Vector<Real>>>{gs,gu,gv});
   Ptr<Vector<Real>>            lb  = u->clone(); lb->zero();
   std::vector<Ptr<BoundConstraint<Real>>> bndList(3);
   bndList[0] = makePtr<BoundConstraint<Real>>(); bndList[0]->deactivate();
