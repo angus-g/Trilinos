@@ -133,6 +133,25 @@ private:
 public:
   LinMoreAlgorithm(ParameterList &list, const Ptr<Secant<Real>> &secant = nullPtr);
 
+  template <class Archive>
+  void serialize(Archive &archive) {
+    // archive base class
+    archive(cereal::base_class<TypeB::Algorithm<Real>>(this));
+
+    // trust region parameters
+    archive(delMax_, eta0_, eta1_, eta2_, gamma0_, gamma1_, gamma2_, TRsafe_, eps_, interpRad_);
+    // iteration flags
+    archive(TRflag_, SPflag_, SPiter_);
+    // secant information
+    archive(esec_, useSecantPrecond_, useSecantHessVec_);
+    // truncated CG
+    archive(tol1_, tol2_, maxit_);
+    // other algorithm params
+    archive(minit_, mu0_, spexp_, redlim_, explim_, alpha_, normAlpha_);
+    archive(interpf_, extrapf_, qtol_, interpfPS_, pslim_);
+    archive(nhess_, verbosity_, writeHeader_, hasEcon_);
+  }
+
   using TypeB::Algorithm<Real>::run;
   void run( Vector<Real>          &x,
             const Vector<Real>    &g, 

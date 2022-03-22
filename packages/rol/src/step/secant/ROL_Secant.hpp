@@ -73,6 +73,15 @@ struct SecantState {
   ESecantMode mode;                        // Intended application mode
 
   SecantState(int M, ESecantMode sm) : storage(M), current(-1), iter(0), mode(sm) {}
+
+  template <class Archive>
+  void serialize(Archive &archive) {
+    archive(iterate);
+    archive(iterDiff, gradDiff);
+    archive(product, product2);
+    archive(storage, current, iter);
+    archive(mode);
+  }
 };
 
 template<class Real>
@@ -97,6 +106,14 @@ public:
     : state_(makePtr<SecantState<Real>>(M,mode)),
       useDefaultScaling_(useDefaultScaling), Bscaling_(Bscaling),
       isInitialized_(false) {}
+
+  template <class Archive>
+  void serialize(Archive &archive) {
+    // default-constructed state means we won't be doing a null deref here
+    archive(*state_);
+    archive(y_, useDefaultScaling_, Bscaling_);
+    archive(isInitialized_);
+  }
 
   Ptr<SecantState<Real>>& get_state() { return state_; }
   const Ptr<SecantState<Real>>& get_state() const { return state_; }

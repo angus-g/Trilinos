@@ -71,6 +71,11 @@ struct AlgorithmState : public ROL::AlgorithmState<Real> {
       gradientVec(nullPtr),
       nproj(0) {}
 
+  template <class Archive>
+  void serialize(Archive &archive) {
+    archive(searchSize, stepVec, gradientVec, nproj);
+  }
+
   void reset() {
     ROL::AlgorithmState<Real>::reset();
     searchSize = static_cast<Real>(1);
@@ -99,6 +104,11 @@ public:
   /** \brief Constructor, given a step and a status test.
   */
   Algorithm();
+
+  template <class Archive>
+  void serialize(Archive &archive) {
+    archive(*state_);
+  }
 
   void setStatusTest(const Ptr<StatusTest<Real>> &status,
                      const bool combineStatus = false);
