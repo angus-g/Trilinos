@@ -401,7 +401,7 @@ in this project level CMakeLists file:
 Here is an examlpe of a project CMakeLists::
 
   # Deefine your minimum CMake version
-  cmake_minimum_required(VERSION 3.23.0 FATAL_ERROR)
+  cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
   # Define your project name and set up major project options
   include("${CMAKE_CURRENT_SOURCE_DIR}/ProjectName.cmake")
