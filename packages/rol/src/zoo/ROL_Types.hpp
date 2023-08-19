@@ -171,6 +171,16 @@ namespace ROL {
     
     virtual ~AlgorithmState() {}
 
+    template <class Archive>
+    void serialize(Archive &archive) {
+      archive(iter, minIter, nfval, ncval, ngrad);
+      archive(value, minValue, gnorm, cnorm, snorm, aggregateGradientNorm);
+      archive(aggregateModelError);
+      archive(flag);
+      archive(iterateVec, lagmultVec, minIterVec);
+      archive(statusFlag);
+    }
+
     void reset(void) {
       iter                  = 0;
       minIter               = 0;
