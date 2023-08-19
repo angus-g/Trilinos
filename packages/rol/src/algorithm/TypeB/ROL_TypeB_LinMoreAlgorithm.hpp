@@ -126,11 +126,17 @@ private:
   Ptr<ReducedLinearConstraint<Real>> rcon_; ///< Equality constraint restricted to current active variables
   Ptr<NullSpaceOperator<Real>> ns_;         ///< Null space projection onto reduced equality constraint Jacobian
 
+  bool initialized_; ///< Flag for whether this algorithm has been initialised
+
   using TypeB::Algorithm<Real>::state_;
   using TypeB::Algorithm<Real>::status_;
   using TypeB::Algorithm<Real>::proj_;
 
 public:
+  // when we deserialise a polymorphic pointer to this algorithm
+  // we need a default constructor to give an object to fill
+  LinMoreAlgorithm();
+
   LinMoreAlgorithm(ParameterList &list, const Ptr<Secant<Real>> &secant = nullPtr);
 
   template <class Archive>
@@ -138,6 +144,8 @@ public:
     // archive base class
     archive(cereal::base_class<TypeB::Algorithm<Real>>(this));
 
+    // trust region model
+    archive(model_);
     // trust region parameters
     archive(delMax_, eta0_, eta1_, eta2_, gamma0_, gamma1_, gamma2_, TRsafe_, eps_, interpRad_);
     // iteration flags
@@ -150,6 +158,8 @@ public:
     archive(minit_, mu0_, spexp_, redlim_, explim_, alpha_, normAlpha_);
     archive(interpf_, extrapf_, qtol_, interpfPS_, pslim_);
     archive(nhess_, verbosity_, writeHeader_, hasEcon_);
+
+    archive(initialized_);
   }
 
   using TypeB::Algorithm<Real>::run;

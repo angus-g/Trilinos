@@ -86,6 +86,11 @@ public:
 
   Objective() : prim_(nullPtr), dual_(nullPtr), basis_(nullPtr) {}
 
+  template <class Archive>
+  void serialize(Archive &archive) {
+    archive(prim_, dual_, basis_);
+  }
+
   /** \brief Update objective function. 
 
       This function updates the objective function at new iterations. 

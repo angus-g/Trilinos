@@ -73,6 +73,7 @@ struct AlgorithmState : public ROL::AlgorithmState<Real> {
 
   template <class Archive>
   void serialize(Archive &archive) {
+    archive(cereal::base_class<ROL::AlgorithmState<Real>>(this));
     archive(searchSize, stepVec, gradientVec, nproj);
   }
 

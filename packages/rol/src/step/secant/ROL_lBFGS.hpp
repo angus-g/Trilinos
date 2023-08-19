@@ -58,8 +58,14 @@ private:
   using Secant<Real>::state_;
 
 public:
+  lBFGS() : Secant<Real>() {}
   lBFGS(int M, bool useDefaultScaling = true, Real Bscaling = Real(1))
     : Secant<Real>(M,useDefaultScaling,Bscaling) {}
+
+  template <class Archive>
+  void serialize(Archive &archive) {
+    archive(cereal::base_class<Secant<Real>>(this));
+  }
 
   // Apply lBFGS Approximate Inverse Hessian
   void applyH( Vector<Real> &Hv, const Vector<Real> &v ) const {
