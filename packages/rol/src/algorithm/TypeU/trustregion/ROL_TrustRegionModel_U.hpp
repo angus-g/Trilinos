@@ -78,6 +78,9 @@ public:
 
   virtual ~TrustRegionModel_U() {}
 
+  // default constructor for polymorphic serialisation
+  TrustRegionModel_U() : obj_(nullPtr), x_(nullPtr), g_(nullPtr), secant_(nullPtr) {}
+
   TrustRegionModel_U(ParameterList           &list,
                      const Ptr<Secant<Real>> &secant = nullPtr,
                      ESecantMode              mode   = SECANTMODE_BOTH)
@@ -86,6 +89,14 @@ public:
     useSecantPrecond_ = slist.get("Use as Preconditioner", false);
     useSecantHessVec_ = slist.get("Use as Hessian",        false);
     if (secant_ == nullPtr) secant_ = SecantFactory<Real>(list,mode);
+  }
+
+  template <class Archive>
+  void serialize(Archive &archive) {
+    archive(obj_);
+    archive(x_, g_, dual_);
+    archive(secant_);
+    archive(useSecantPrecond_, useSecantHessVec_);
   }
 
   void initialize(const Vector<Real> &x, const Vector<Real> &g) {

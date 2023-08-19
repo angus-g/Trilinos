@@ -14,6 +14,9 @@ namespace ROL {
 namespace TypeB {
 
 template<typename Real>
+LinMoreAlgorithm<Real>::LinMoreAlgorithm() : initialized_(false) {}
+
+template<typename Real>
 LinMoreAlgorithm<Real>::LinMoreAlgorithm(ParameterList &list,
                                          const Ptr<Secant<Real>> &secant) {
   // Set status test
@@ -87,6 +90,8 @@ LinMoreAlgorithm<Real>::LinMoreAlgorithm(ParameterList &list,
     std::string secantType = list.sublist("General").sublist("Secant").get("Type","Limited-Memory BFGS");
     esec_ = StringToESecant(secantType);
   }
+
+  initialized_ = false;
 }
 
 template<typename Real>
@@ -95,12 +100,24 @@ void LinMoreAlgorithm<Real>::initialize(Vector<Real>          &x,
                                         Objective<Real>       &obj,
                                         BoundConstraint<Real> &bnd,
                                         std::ostream &outStream) {
+  // regardless of whether this object has already been initialised
+  // we construct a bounds projection (or reduced constraints)
   //const Real one(1);
   hasEcon_ = true;
   if (proj_ == nullPtr) {
     proj_ = makePtr<PolyhedralProjection<Real>>(makePtrFromRef(bnd));
     hasEcon_ = false;
+  } else {
+  // Initialize null space projection
+    rcon_ = makePtr<ReducedLinearConstraint<Real>>(proj_->getLinearConstraint(),
+                                                   makePtrFromRef(bnd),
+                                                   makePtrFromRef(x));
+    ns_   = makePtr<NullSpaceOperator<Real>>(rcon_,x,
+                                             *proj_->getResidual());
   }
+
+  if (initialized_) return;
+
   // Initialize data
   TypeB::Algorithm<Real>::initialize(x,g);
   nhess_ = 0;
@@ -133,6 +150,8 @@ void LinMoreAlgorithm<Real>::initialize(Vector<Real>          &x,
     ns_   = makePtr<NullSpaceOperator<Real>>(rcon_,x,
                                              *proj_->getResidual());
   }
+
+  initialized_ = true;
 }
 
 template<typename Real>
