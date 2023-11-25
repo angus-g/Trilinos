@@ -160,6 +160,7 @@ public:
     archive(nhess_, verbosity_, writeHeader_, hasEcon_);
 
     archive(initialized_);
+    archive(useNM_, storageNM_);
   }
 
   using TypeB::Algorithm<Real>::run;
