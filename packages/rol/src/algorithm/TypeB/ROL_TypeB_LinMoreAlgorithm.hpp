@@ -157,6 +157,10 @@ public:
     // other algorithm params
     archive(minit_, mu0_, spexp_, redlim_, explim_, alpha_, normAlpha_);
     archive(interpf_, extrapf_, qtol_, interpfPS_, pslim_);
+    // inexactness params
+    archive(useInexact_, scale0_, scale1_, scale_, omega_, force_);
+    archive(updateIter_, forceFactor_, gtol_);
+    // counters and misc
     archive(nhess_, verbosity_, writeHeader_, hasEcon_);
 
     archive(initialized_);
