@@ -544,8 +544,8 @@ macro(tribits_define_global_options_and_define_extra_repos)
     CACHE BOOL
     "If set TRUE, then set IMPORTED_NO_SYSTEM property on all exported libraries.")
 
-  if (CMAKE_VERSION VERSION_LESS 3.23 AND ${PROJECT_NAME}_IMPORTED_NO_SYSTEM)
-    message(FATAL_ERROR "Error, setting ${PROJECT_NAME}_IMPORTED_NO_SYSTEM='${${PROJECT_NAME}_IMPORTED_NO_SYSTEM}' for CMake version '${CMAKE_VERSION}' < 3.23 is not allowed!")
+  if (CMAKE_VERSION VERSION_LESS 3.22 AND ${PROJECT_NAME}_IMPORTED_NO_SYSTEM)
+    message(FATAL_ERROR "Error, setting ${PROJECT_NAME}_IMPORTED_NO_SYSTEM='${${PROJECT_NAME}_IMPORTED_NO_SYSTEM}' for CMake version '${CMAKE_VERSION}' < 3.22 is not allowed!")
   endif()
 
   advanced_set(TPL_FIND_SHARED_LIBS ON CACHE BOOL
